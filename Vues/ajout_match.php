@@ -26,7 +26,10 @@
             <label>Date du match :</label>
             <input type="date" name="date_match"><br>
 
-            <label>Heure :</label>
+            <label>Heure du debut du match:</label>
+            <input type="time" name="heure"><br>
+
+            <label>Heure de fin du match:</label>
             <input type="time" name="heure"><br>
 
             <label>Résultat :</label>
