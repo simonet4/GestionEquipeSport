@@ -89,3 +89,19 @@ tr:hover {
         font-size: 14px;
     }
 }
+
+/* Ajoutez ceci à la fin de GlobalCSS.css */
+.navbar {
+    background-color: #0056b3;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-bottom: 20px;
+}
+.nav-links { display: flex; gap: 20px; }
+.nav-item { color: white; text-decoration: none; font-weight: bold; }
+.nav-item:hover { text-decoration: underline; color: #e0e0e0; }
+.logout { background-color: #ff4d4d; padding: 5px 10px; border-radius: 4px; }
+.logout:hover { background-color: #cc0000; }
