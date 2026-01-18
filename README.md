@@ -41,6 +41,7 @@ Application web de gestion d'équipe sportive (adaptée au football) développé
      private $user = 'root';
      private $pass = '';
      ```
+   - Créer et configurer `config/secrets.php` avec le mot de passe administrateur (non committé).
 
 4. **Lancement** :
    - Placer le dossier `public` dans le répertoire web de XAMPP (htdocs).
