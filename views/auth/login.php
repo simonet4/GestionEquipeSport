@@ -19,6 +19,9 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Se connecter</button>
                 </form>
+                <div class="mt-3 text-center">
+                    <a href="index.php?page=auth&action=forgot">Mot de passe oublié ?</a>
+                </div>
             </div>
         </div>
         <div class="mt-3 text-center text-muted">

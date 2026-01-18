@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <?php if (isset($_SESSION['user_id'])): ?>
+    <?php if (isset($_SESSION['user'])): ?>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
             <a class="navbar-brand" href="#">Coach Assistant</a>
@@ -29,6 +29,7 @@
                     </li>
                 </ul>
                 <span class="navbar-text">
+                    <a href="index.php?page=profile&action=index" class="btn btn-outline-primary btn-sm me-2">Profil</a>
                     <a href="index.php?page=auth&action=logout" class="btn btn-danger btn-sm">Déconnexion</a>
                 </span>
             </div>

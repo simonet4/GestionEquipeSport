@@ -18,7 +18,7 @@ $page = $_GET['page'] ?? 'auth';
 $action = $_GET['action'] ?? 'login';
 
 // Protège les pages privées sans connexion
-if (!isset($_SESSION['user_id']) && $page !== 'auth') {
+if (!isset($_SESSION['user']) && $page !== 'auth') {
     header('Location: index.php?page=auth&action=login');
     exit;
 }
@@ -30,6 +30,8 @@ switch ($page) {
         if ($action == 'login') $controller->login();
         elseif ($action == 'check') $controller->checkCredentials();
         elseif ($action == 'logout') $controller->logout();
+        elseif ($action == 'forgot') $controller->forgot();
+        elseif ($action == 'reset') $controller->reset();
         break;
 
     case 'joueurs':
@@ -54,6 +56,12 @@ switch ($page) {
     case 'stats':
         $controller = new StatController();
         $controller->index();
+        break;
+
+    case 'profile':
+        $controller = new ProfileController();
+        if ($action == 'index') $controller->index();
+        elseif ($action == 'update') $controller->update();
         break;
 
     default:
