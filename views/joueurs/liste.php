@@ -22,7 +22,7 @@
                     <?= htmlspecialchars($joueur['prenom']) ?>
                 </td>
                 <td><?= htmlspecialchars($joueur['numero_licence']) ?></td>
-                <td>Attaquant (Exemple)</td>
+                <td><?= htmlspecialchars($joueur['preferred_poste'] ?? 'Non défini') ?></td>
                 <td>
                     <span class="badge 
                         <?= $joueur['statut'] == 'Actif' ? 'bg-success' : 

@@ -21,25 +21,35 @@ class UserModel {
     }
 
     public function updateProfile($id, $login, $email, $password = null) { // Met à jour le profil
-        if ($password) {
-            $hashed = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "UPDATE utilisateur SET login = :login, email = :email, mot_de_passe = :pass WHERE id_utilisateur = :id";
-            $stmt = $this->pdo->prepare($sql);
-            return $stmt->execute([':login' => $login, ':email' => $email, ':pass' => $hashed, ':id' => $id]);
-        } else {
-            $sql = "UPDATE utilisateur SET login = :login, email = :email WHERE id_utilisateur = :id";
-            $stmt = $this->pdo->prepare($sql);
-            return $stmt->execute([':login' => $login, ':email' => $email, ':id' => $id]);
+        try {
+            if ($password) {
+                $hashed = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "UPDATE utilisateur SET login = :login, email = :email, mot_de_passe = :pass WHERE id_utilisateur = :id";
+                $stmt = $this->pdo->prepare($sql);
+                return $stmt->execute([':login' => $login, ':email' => $email, ':pass' => $hashed, ':id' => $id]);
+            } else {
+                $sql = "UPDATE utilisateur SET login = :login, email = :email WHERE id_utilisateur = :id";
+                $stmt = $this->pdo->prepare($sql);
+                return $stmt->execute([':login' => $login, ':email' => $email, ':id' => $id]);
+            }
+        } catch (Exception $e) {
+            error_log("Erreur lors de la mise à jour du profil : " . $e->getMessage());
+            return false;
         }
     }
 
     public function resetPassword($email) { // Réinitialise le mot de passe
-        $newPass = 'admin'; // Mot de passe par défaut
-        $hashed = password_hash($newPass, PASSWORD_DEFAULT);
-        $sql = "UPDATE utilisateur SET mot_de_passe = :pass WHERE email = :email";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':pass' => $hashed, ':email' => $email]);
-        return $stmt->rowCount() > 0;
+        try {
+            $newPass = 'admin'; // Mot de passe par défaut
+            $hashed = password_hash($newPass, PASSWORD_DEFAULT);
+            $sql = "UPDATE utilisateur SET mot_de_passe = :pass WHERE email = :email";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':pass' => $hashed, ':email' => $email]);
+            return $stmt->rowCount() > 0;
+        } catch (Exception $e) {
+            error_log("Erreur lors de la réinitialisation du mot de passe : " . $e->getMessage());
+            return false;
+        }
     }
 }
 ?>

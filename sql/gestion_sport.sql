@@ -180,3 +180,17 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Vue pour les joueurs avec poste préféré
+--
+CREATE VIEW joueurs_avec_poste AS
+SELECT j.*, COALESCE((
+    SELECT poste 
+    FROM participer p 
+    WHERE p.id_joueur = j.id_joueur AND p.poste IS NOT NULL AND p.poste != '' 
+    GROUP BY poste 
+    ORDER BY COUNT(*) DESC 
+    LIMIT 1
+), 'Non défini') AS preferred_poste
+FROM joueur j;

@@ -14,16 +14,21 @@ class MatchModel {
     }
 
     public function addMatch($date, $heure, $adversaire, $lieu) { // Ajoute un nouveau match
-        $date_heure = $date . ' ' . $heure . ':00';
-        
-        $sql = "INSERT INTO match_rencontre (date_heure, nom_equipe_adverse, lieu_rencontre) 
-                VALUES (:dh, :adversaire, :lieu)";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
-            ':dh' => $date_heure,
-            ':adversaire' => $adversaire,
-            ':lieu' => $lieu
-        ]);
+        try {
+            $date_heure = $date . ' ' . $heure . ':00';
+            
+            $sql = "INSERT INTO match_rencontre (date_heure, nom_equipe_adverse, lieu_rencontre) 
+                    VALUES (:dh, :adversaire, :lieu)";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([
+                ':dh' => $date_heure,
+                ':adversaire' => $adversaire,
+                ':lieu' => $lieu
+            ]);
+        } catch (Exception $e) {
+            error_log("Erreur lors de l'ajout du match : " . $e->getMessage());
+            return false;
+        }
     }
 
     public function getMatchById($id) { // Détails d'un match spécifique
