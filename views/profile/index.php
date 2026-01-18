@@ -1,7 +1,7 @@
 <div class="container mt-5">
     <h2>Gestion du Profil</h2>
     <?php if (isset($message)) echo "<div class='alert alert-info'>$message</div>"; ?>
-    <form action="/profile/update" method="post">
+    <form action="index.php?page=profile&action=update" method="post">
         <div class="mb-3">
             <label for="current_password" class="form-label">Mot de passe administrateur (requis pour modifications)</label>
             <input type="password" class="form-control" id="current_password" name="current_password" required>
