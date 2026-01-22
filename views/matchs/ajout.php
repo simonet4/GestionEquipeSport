@@ -23,7 +23,7 @@
 
                 <div class="mb-3">
                     <label for="adversaire" class="form-label">Adversaire</label>
-                    <input type="text" class="form-control" id="adversaire" name="adversaire" placeholder="Nom de l'équipe adverse" required>
+                    <input type="text" class="form-control" id="adversaire" name="adversaire" placeholder="Ex: FC Nantes" required>
                 </div>
 
                 <div class="mb-3">
@@ -35,7 +35,7 @@
                 </div>
 
                 <hr class="my-4">
-                <h4 class="mb-3">Sélection de l'équipe initiale</h4>
+                <h4 class="mb-3">Sélection de l'équipe</h4>
                 
                 <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                     <table class="table table-sm table-hover border">
