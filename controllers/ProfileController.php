@@ -2,6 +2,7 @@
 require_once '../models/UserModel.php';
 
 class ProfileController {
+    public $currentPage;
     private $userModel;
 
     public function __construct() {
