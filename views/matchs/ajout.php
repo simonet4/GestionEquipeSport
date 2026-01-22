@@ -8,7 +8,7 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <form action="index.php?page=matchs&action=ajouter" method="post">
+            <form action="index.php?page=matchs&action=add" method="post">
                 
                 <div class="row mb-3">
                     <div class="col-md-6">
