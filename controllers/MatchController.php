@@ -1,7 +1,7 @@
 <?php
 class MatchController {
     
-    public function liste() { // Calendrier des matchs
+    public function liste() { 
         $model = new MatchModel();
         $matchs = $model->getAllMatchs();
         $titre = "Calendrier des Rencontres";
@@ -10,7 +10,9 @@ class MatchController {
         require_once "../views/layout.php";
     }
 
-    public function ajouter() { // Formulaire pour planifier un match
+    public function ajouter() {
+        $joueurModel = new JoueurModel();
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date = $_POST['date'];
             $heure = $_POST['heure'];
@@ -18,21 +20,37 @@ class MatchController {
             $lieu = $_POST['lieu'];
 
             $model = new MatchModel();
-            $model->addMatch($date, $heure, $adversaire, $lieu);
             
-            header('Location: index.php?page=matchs&action=liste');
+            $id_match = $model->addMatch($date, $heure, $adversaire, $lieu);
+            
+            if ($id_match && isset($_POST['joueurs']) && is_array($_POST['joueurs'])) {
+                $selection = [];
+                foreach ($_POST['joueurs'] as $id_joueur) {
+                    $infos = $_POST['data'][$id_joueur] ?? [];
+                    $selection[] = [
+                        'id' => $id_joueur,
+                        'titulaire' => isset($infos['titulaire']) ? 1 : 0,
+                        'poste' => htmlspecialchars($infos['poste'] ?? '')
+                    ];
+                }
+                $model->saveFeuilleMatch($id_match, $selection);
+            }
+            
+            header('Location: index.php?page=matchs'); 
             exit;
         }
         
+        $joueursActifs = $joueurModel->getJoueursActifs();
+
         $titre = "Planifier un match";
         $vue = "../views/matchs/ajout.php";
         $currentPage = 'matchs';
         require_once "../views/layout.php";
     }
 
-    public function feuille() { // Gestion de la feuille de match
+    public function feuille() {
         if (!isset($_GET['id'])) {
-            header('Location: index.php?page=matchs&action=liste');
+            header('Location: index.php?page=matchs');
             exit;
         }
 
@@ -55,7 +73,7 @@ class MatchController {
             
             $matchModel->saveFeuilleMatch($id_match, $selection);
             
-            header("Location: index.php?page=matchs&action=feuille&id=$id_match&success=1");
+            header("Location: index.php?page=matchs");
             exit;
         }
 
@@ -69,9 +87,9 @@ class MatchController {
         require_once "../views/layout.php";
     }
 
-    public function noter() { // Saisie score et notes après match
+    public function noter() { 
         if (!isset($_GET['id'])) {
-            header('Location: index.php?page=matchs&action=liste');
+            header('Location: index.php?page=matchs');
             exit;
         }
 
@@ -91,13 +109,14 @@ class MatchController {
                 }
             }
 
-            header("Location: index.php?page=matchs&action=liste");
+            header("Location: index.php?page=matchs");
             exit;
         }
 
         $match = $matchModel->getMatchById($id_match);
         $participants = $matchModel->getFeuilleDeMatch($id_match);
         $joueurModel = new JoueurModel();
+        
         $tousLesJoueurs = [];
         foreach($joueurModel->getAllJoueurs() as $j) {
             $tousLesJoueurs[$j['id_joueur']] = $j;
@@ -109,9 +128,9 @@ class MatchController {
         require_once "../views/layout.php";
     }
 
-    public function modifier() { // Formulaire pré-rempli pour modifier un match
+    public function modifier() { 
         if (!isset($_GET['id'])) {
-            header('Location: index.php?page=matchs&action=liste');
+            header('Location: index.php?page=matchs');
             exit;
         }
 
@@ -120,7 +139,7 @@ class MatchController {
         $match = $matchModel->getMatchById($id_match);
 
         if (!$match) {
-            header('Location: index.php?page=matchs&action=liste');
+            header('Location: index.php?page=matchs');
             exit;
         }
 
@@ -132,7 +151,7 @@ class MatchController {
 
             $matchModel->updateMatch($id_match, $date, $heure, $adversaire, $lieu);
             
-            header('Location: index.php?page=matchs&action=liste');
+            header('Location: index.php?page=matchs');
             exit;
         }
 
@@ -142,12 +161,12 @@ class MatchController {
         require_once "../views/layout.php";
     }
 
-    public function supprimer() { // Supprime un match
+    public function supprimer() {
         if (isset($_GET['id'])) {
             $matchModel = new MatchModel();
             $matchModel->deleteMatch($_GET['id']);
         }
-        header('Location: index.php?page=matchs&action=liste');
+        header('Location: index.php?page=matchs');
         exit;
     }
 }

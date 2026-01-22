@@ -1,25 +1,48 @@
-<form action="" method="post" class="row g-3">
-    <div class="col-md-6">
-        <label for="date" class="form-label">Date du match</label>
-        <input type="date" class="form-control" name="date" required>
-    </div>
-    <div class="col-md-6">
-        <label for="heure" class="form-label">Heure</label>
-        <input type="time" class="form-control" name="heure" required>
-    </div>
-    <div class="col-md-8">
-        <label for="adversaire" class="form-label">Équipe adverse</label>
-        <input type="text" class="form-control" name="adversaire" required>
-    </div>
-    <div class="col-md-4">
-        <label for="lieu" class="form-label">Lieu</label>
-        <select class="form-select" name="lieu">
-            <option value="Domicile">Domicile</option>
-            <option value="Exterieur">Extérieur</option>
-        </select>
-    </div>
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary">Planifier le match</button>
-        <a href="index.php?page=matchs&action=liste" class="btn btn-secondary">Annuler</a>
-    </div>
-</form>
+<hr class="my-4">
+<h4>Sélection des joueurs</h4>
+<div class="table-responsive">
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr>
+                <th style="width: 50px;">Sel.</th>
+                <th>Joueur</th>
+                <th>Rôle</th>
+                <th>Poste</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($joueursActifs as $j): ?>
+            <tr>
+                <td class="text-center align-middle">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" 
+                               name="joueurs[]" 
+                               value="<?= $j['id_joueur'] ?>" 
+                               id="j_<?= $j['id_joueur'] ?>">
+                    </div>
+                </td>
+                <td class="align-middle">
+                    <label class="form-check-label w-100" for="j_<?= $j['id_joueur'] ?>">
+                        <?= htmlspecialchars($j['nom'] . ' ' . $j['prenom']) ?>
+                        <br>
+                        <small class="text-muted"><?= htmlspecialchars($j['numero_licence']) ?></small>
+                    </label>
+                </td>
+                <td class="align-middle">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" 
+                               name="data[<?= $j['id_joueur'] ?>][titulaire]" 
+                               value="1" checked>
+                        <label class="form-check-label">Titulaire</label>
+                    </div>
+                </td>
+                <td class="align-middle">
+                    <input type="text" class="form-control form-control-sm" 
+                           name="data[<?= $j['id_joueur'] ?>][poste]" 
+                           placeholder="Poste (ex: Ailier)">
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
