@@ -1,36 +1,35 @@
 <?php
-// Singleton pour une seule connexion DB, évite les multiples connexions
 class DBConnection {
-    private static $instance = null; // Stocke l'unique instance
-    private $pdo; // Objet de connexion
+    private static $instance = null;
+    private $pdo;
 
-    private function __construct() { // Privé pour empêcher new()
-        // Connexion locale par défaut
-        $host = 'localhost';
-        $dbname = 'gestion_sport';
-        $user = 'root';
-        $pass = '';
+    private function __construct() {
+        $host = getenv('DB_HOST');
+        if (empty($host) || $host === 'localhost') {
+            $host = 'db_sport';
+        }
+        
+        $dbname = getenv('DB_NAME') ?: 'sport_db';
+        $user = getenv('DB_USER') ?: 'sport_user';
+        $pass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
 
         try {
-            $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
-            // Erreurs en exceptions pour debug
+            $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            // Résultats en tableaux associatifs
             $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             die("Erreur connexion DB: " . $e->getMessage());
         }
     }
 
-    public static function getInstance() { // Accès à l'instance unique
+    public static function getInstance() {
         if (self::$instance === null) {
             self::$instance = new DBConnection();
         }
         return self::$instance;
     }
 
-    public function getPDO() { // Retourne l'objet PDO pour requêtes
+    public function getPDO() {
         return $this->pdo;
     }
 }
-?>
