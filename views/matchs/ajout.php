@@ -1,48 +1,101 @@
-<hr class="my-4">
-<h4>Sélection des joueurs</h4>
-<div class="table-responsive">
-    <table class="table table-sm table-hover">
-        <thead>
-            <tr>
-                <th style="width: 50px;">Sel.</th>
-                <th>Joueur</th>
-                <th>Rôle</th>
-                <th>Poste</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($joueursActifs as $j): ?>
-            <tr>
-                <td class="text-center align-middle">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" 
-                               name="joueurs[]" 
-                               value="<?= $j['id_joueur'] ?>" 
-                               id="j_<?= $j['id_joueur'] ?>">
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Planifier un match</h2>
+        <a href="index.php?page=matchs" class="btn btn-outline-secondary">
+            Retour
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="index.php?page=matchs&action=ajouter" method="post">
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
                     </div>
-                </td>
-                <td class="align-middle">
-                    <label class="form-check-label w-100" for="j_<?= $j['id_joueur'] ?>">
-                        <?= htmlspecialchars($j['nom'] . ' ' . $j['prenom']) ?>
-                        <br>
-                        <small class="text-muted"><?= htmlspecialchars($j['numero_licence']) ?></small>
-                    </label>
-                </td>
-                <td class="align-middle">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" 
-                               name="data[<?= $j['id_joueur'] ?>][titulaire]" 
-                               value="1" checked>
-                        <label class="form-check-label">Titulaire</label>
+                    <div class="col-md-6">
+                        <label for="heure" class="form-label">Heure</label>
+                        <input type="time" class="form-control" id="heure" name="heure" required>
                     </div>
-                </td>
-                <td class="align-middle">
-                    <input type="text" class="form-control form-control-sm" 
-                           name="data[<?= $j['id_joueur'] ?>][poste]" 
-                           placeholder="Poste (ex: Ailier)">
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+                </div>
+
+                <div class="mb-3">
+                    <label for="adversaire" class="form-label">Adversaire</label>
+                    <input type="text" class="form-control" id="adversaire" name="adversaire" placeholder="Nom de l'équipe adverse" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="lieu" class="form-label">Lieu</label>
+                    <select class="form-select" id="lieu" name="lieu">
+                        <option value="Domicile">Domicile</option>
+                        <option value="Exterieur">Extérieur</option>
+                    </select>
+                </div>
+
+                <hr class="my-4">
+                <h4 class="mb-3">Sélection de l'équipe initiale</h4>
+                
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-sm table-hover border">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th style="width: 50px;" class="text-center">Sel.</th>
+                                <th>Joueur</th>
+                                <th>Rôle</th>
+                                <th>Poste</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (isset($joueursActifs) && !empty($joueursActifs)): ?>
+                                <?php foreach ($joueursActifs as $j): ?>
+                                <tr>
+                                    <td class="text-center align-middle">
+                                        <div class="form-check d-flex justify-content-center">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   name="joueurs[]" 
+                                                   value="<?= $j['id_joueur'] ?>" 
+                                                   id="j_<?= $j['id_joueur'] ?>">
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <label class="form-check-label w-100" style="cursor: pointer;" for="j_<?= $j['id_joueur'] ?>">
+                                            <strong><?= htmlspecialchars($j['nom'] . ' ' . $j['prenom']) ?></strong>
+                                            <div class="text-muted small"><?= htmlspecialchars($j['numero_licence']) ?></div>
+                                        </label>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   name="data[<?= $j['id_joueur'] ?>][titulaire]" 
+                                                   value="1" checked>
+                                            <label class="form-check-label small">Titulaire</label>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <input type="text" class="form-control form-control-sm" 
+                                               name="data[<?= $j['id_joueur'] ?>][poste]" 
+                                               placeholder="Poste">
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">Aucun joueur actif disponible.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Valider et Créer le match
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
 </div>
