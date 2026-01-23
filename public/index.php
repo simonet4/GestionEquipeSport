@@ -49,7 +49,7 @@ switch ($page) {
     case 'matchs':
         $controller = new MatchController();
         if ($action == 'liste') $controller->liste();
-        elseif ($action == 'add') $controller->ajouter();
+        elseif ($action == 'ajouter') $controller->ajouter();
         elseif ($action == 'edit') $controller->modifier();
         elseif ($action == 'delete') $controller->supprimer();
         elseif ($action == 'feuille') $controller->feuille();
